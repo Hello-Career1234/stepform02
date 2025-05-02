@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>ステップフォーム 見た目用</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 30px;
+      max-width: 500px;
+      margin: auto;
+    }
+
+    .progress-container {
+      background: #eee;
+      border-radius: 20px;
+      height: 10px;
+      margin-bottom: 30px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      background: #4caf50;
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .step {
+      display: none;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      margin: 10px 5px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    input[type="text"], input[type="email"] {
+      width: 100%;
+      padding: 8px;
+      margin: 12px 0;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>無料相談フォーム</h2>
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <form id="stepForm">
+    <div class="step active">
+      <label>お名前</label>
+      <input type="text" placeholder="例：山田 太郎" />
+      <button type="button" class="btn" onclick="nextStep()">次へ</button>
+    </div>
+
+    <div class="step">
+      <label>メールアドレス</label>
+      <input type="email" placeholder="例：example@mail.com" />
+      <button type="button" class="btn" onclick="prevStep()">戻る</button>
+      <button type="button" class="btn" onclick="nextStep()">次へ</button>
+    </div>
+
+    <div class="step">
+      <label>転職希望時期</label>
+      <input type="text" placeholder="例：3ヶ月以内" />
+      <button type="button" class="btn" onclick="prevStep()">戻る</button>
+      <button type="button" class="btn" onclick="nextStep()">次へ</button>
+    </div>
+
+    <div class="step">
+      <p>ご入力ありがとうございました！</p>
+      <button type="button" class="btn" onclick="prevStep()">戻る</button>
+      <button type="submit" class="btn">送信</button>
+    </div>
+  </form>
+
+  <script>
+    let currentStep = 0;
+    const steps = document.querySelectorAll('.step');
+    const progressBar = document.getElementById('progressBar');
+
+    function showStep(index) {
+      steps.forEach((step, i) => {
+        step.classList.toggle('active', i === index);
+      });
+      updateProgress(index);
+    }
+
+    function nextStep() {
+      if (currentStep < steps.length - 1) {
+        currentStep++;
+        showStep(currentStep);
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    }
+
+    function updateProgress(index) {
+      const percent = (index / (steps.length - 1)) * 100;
+      progressBar.style.width = percent + "%";
+    }
+
+    document.getElementById('stepForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert("フォームの送信ボタンが押されました（実際には送信していません）");
+    });
+
+    updateProgress(currentStep);
+  </script>
+
+</body>
+</html>
